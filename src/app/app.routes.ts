@@ -29,6 +29,16 @@ export const routes: Routes = [
         canActivate: [adminGuard],
         loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent)
       },
+      {
+        path: 'brands',
+        canActivate: [adminGuard],
+        loadComponent: () => import('./features/brands/brands.component').then(m => m.BrandsComponent)
+      },
+      {
+        path: 'products',
+        canActivate: [adminGuard],
+        loadComponent: () => import('./features/products/products.component').then(m => m.ProductsComponent)
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
