@@ -9,12 +9,28 @@ import { ToastService } from '../../services/toast.service';
   template: `
     <div class="toast-container">
       @for (toast of toastService.toasts(); track toast.id) {
-        <div class="toast" [ngClass]="'toast-' + toast.type">
+        <div class="toast" [ngClass]="'toast-' + toast.type" role="alert">
+          <div class="toast-icon">
+            @switch (toast.type) {
+              @case ('success') {
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              }
+              @case ('error') {
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8v5M12 16.5h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              }
+              @case ('warning') {
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 9v4M12 17h.01M10.3 3.9 2.7 17a1.8 1.8 0 0 0 1.6 2.7h15.4A1.8 1.8 0 0 0 21.3 17L13.7 3.9a1.8 1.8 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              }
+              @default {
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8h.01M12 11.5v4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg>
+              }
+            }
+          </div>
           <div class="toast-content">
             <div class="toast-title">{{ toast.title }}</div>
             <div class="toast-message">{{ toast.message }}</div>
           </div>
-          <button class="toast-close" (click)="toastService.remove(toast.id)">&times;</button>
+          <button class="toast-close" aria-label="Dismiss notification" (click)="toastService.remove(toast.id)">&times;</button>
         </div>
       }
     </div>
@@ -33,7 +49,7 @@ import { ToastService } from '../../services/toast.service';
     .toast {
       display: flex;
       align-items: flex-start;
-      justify-content: space-between;
+      gap: 0.75rem;
       min-width: 300px;
       max-width: 400px;
       padding: 1rem;
@@ -44,10 +60,23 @@ import { ToastService } from '../../services/toast.service';
       animation: slideIn 0.3s ease-out forwards;
     }
 
+    .toast-icon {
+      flex-shrink: 0;
+      display: flex;
+      margin-top: 0.125rem;
+    }
+
     .toast-success { border-left-color: var(--success); }
+    .toast-success .toast-icon { color: var(--success); }
+
     .toast-error { border-left-color: var(--danger); }
+    .toast-error .toast-icon { color: var(--danger); }
+
     .toast-info { border-left-color: var(--info); }
+    .toast-info .toast-icon { color: var(--info); }
+
     .toast-warning { border-left-color: var(--warning); }
+    .toast-warning .toast-icon { color: var(--warning); }
 
     .toast-content {
       flex: 1;
